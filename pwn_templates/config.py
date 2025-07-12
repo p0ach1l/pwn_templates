@@ -40,37 +40,37 @@ TEMPLATE_MAPPING = {
 # 默认替换变量
 DEFAULT_REPLACEMENTS = {
     "date": datetime.now().strftime("%Y-%m-%d"),
-    "target": "target_binary",
+    "description": "no description",
     "binary_name": "target",
     "remote_host": "127.0.0.1",
     "remote_port": "9999",
-    "offset": "72",
-    "return_address": "0x401234",
-    "pop_rdi_gadget": "0x401234",
-    "pop_rsi_gadget": "0x401235",
-    "pop_rdx_gadget": "0x401236",
-    "format_offset": "6",
-    "target_address": "0x601020",
-    "target_value": "0x401234",
-    "libc_offset": "0x3c4b20",
-    "nop_length": "100",
-    "shellcode_address": "0x7fffffffe000"
+    # "offset": "72",
+    # "return_address": "0x401234",
+    # "pop_rdi_gadget": "0x401234",
+    # "pop_rsi_gadget": "0x401235",
+    # "pop_rdx_gadget": "0x401236",
+    # "format_offset": "6",
+    # "target_address": "0x601020",
+    # "target_value": "0x401234",
+    # "libc_offset": "0x3c4b20",
+    # "nop_length": "100",
+    # "shellcode_address": "0x7fffffffe000"
 }
 
 # 参数验证规则
 VALIDATION_RULES = {
     "remote_port": {"type": int, "min": 1, "max": 65535},
-    "offset": {"type": int, "min": 0, "max": 10000},
-    "format_offset": {"type": int, "min": 1, "max": 50},
-    "nop_length": {"type": int, "min": 0, "max": 1000},
-    "return_address": {"type": str, "pattern": r"^0x[0-9a-fA-F]+$"},
-    "pop_rdi_gadget": {"type": str, "pattern": r"^0x[0-9a-fA-F]+$"},
-    "pop_rsi_gadget": {"type": str, "pattern": r"^0x[0-9a-fA-F]+$"},
-    "pop_rdx_gadget": {"type": str, "pattern": r"^0x[0-9a-fA-F]+$"},
-    "target_address": {"type": str, "pattern": r"^0x[0-9a-fA-F]+$"},
-    "target_value": {"type": str, "pattern": r"^0x[0-9a-fA-F]+$"},
-    "libc_offset": {"type": str, "pattern": r"^0x[0-9a-fA-F]+$"},
-    "shellcode_address": {"type": str, "pattern": r"^0x[0-9a-fA-F]+$"},
+    # "offset": {"type": int, "min": 0, "max": 10000},
+    # "format_offset": {"type": int, "min": 1, "max": 50},
+    # "nop_length": {"type": int, "min": 0, "max": 1000},
+    # "return_address": {"type": str, "pattern": r"^0x[0-9a-fA-F]+$"},
+    # "pop_rdi_gadget": {"type": str, "pattern": r"^0x[0-9a-fA-F]+$"},
+    # "pop_rsi_gadget": {"type": str, "pattern": r"^0x[0-9a-fA-F]+$"},
+    # "pop_rdx_gadget": {"type": str, "pattern": r"^0x[0-9a-fA-F]+$"},
+    # "target_address": {"type": str, "pattern": r"^0x[0-9a-fA-F]+$"},
+    # "target_value": {"type": str, "pattern": r"^0x[0-9a-fA-F]+$"},
+    # "libc_offset": {"type": str, "pattern": r"^0x[0-9a-fA-F]+$"},
+    # "shellcode_address": {"type": str, "pattern": r"^0x[0-9a-fA-F]+$"},
 }
 
 # 模板特定的参数

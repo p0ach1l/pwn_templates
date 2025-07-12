@@ -56,7 +56,7 @@ def create_parser():
                            help='溢出偏移量 (默认: 72)')
 
     # 目标描述
-    new_parser.add_argument('--target',
+    new_parser.add_argument('--description',
                            help='目标描述信息')
 
     return parser
@@ -108,13 +108,13 @@ def handle_new_command(args):
         params['remote_host'] = args.host
     if args.port:
         params['remote_port'] = str(args.port)
-    if args.offset:
-        params['offset'] = str(args.offset)
-    if args.target:
-        params['target'] = args.target
+    # if args.offset:
+    #     params['offset'] = str(args.offset)
+    # if args.description:
+    #     params['description'] = args.description
 
     # 设置输出文件名
-    output_file = args.output
+    output_file = args.binary
 
     # 交互式配置
     if args.interactive:
@@ -167,9 +167,9 @@ def interactive_config(template_id):
     if binary and binary != 'skip':
         params['binary_name'] = binary
 
-    target_desc = input(f"目标描述 [{DEFAULT_REPLACEMENTS['target']}]: ").strip()
+    target_desc = input(f"目标描述 [{DEFAULT_REPLACEMENTS['description']}]: ").strip()
     if target_desc and target_desc != 'skip':
-        params['target'] = target_desc
+        params['description'] = target_desc
 
     # 远程连接参数
     host = input(f"远程主机地址 [{DEFAULT_REPLACEMENTS['remote_host']}]: ").strip()
@@ -199,32 +199,32 @@ def interactive_config(template_id):
             else:
                 print(f"⚠️  {error_msg}，使用默认值")
 
-    # 模板特定的额外参数
-    if template_id == 2:  # ROP链 - 额外的gadget地址
-        pop_rsi = input(f"pop rsi gadget地址 [{DEFAULT_REPLACEMENTS['pop_rsi_gadget']}]: ").strip()
-        if pop_rsi and pop_rsi != 'skip':
-            is_valid, error_msg = validate_parameter('pop_rsi_gadget', pop_rsi)
-            if is_valid:
-                params['pop_rsi_gadget'] = pop_rsi
-            else:
-                print(f"⚠️  {error_msg}，使用默认值")
+    # # 模板特定的额外参数
+    # if template_id == 2:  # ROP链 - 额外的gadget地址
+    #     pop_rsi = input(f"pop rsi gadget地址 [{DEFAULT_REPLACEMENTS['pop_rsi_gadget']}]: ").strip()
+    #     if pop_rsi and pop_rsi != 'skip':
+    #         is_valid, error_msg = validate_parameter('pop_rsi_gadget', pop_rsi)
+    #         if is_valid:
+    #             params['pop_rsi_gadget'] = pop_rsi
+    #         else:
+    #             print(f"⚠️  {error_msg}，使用默认值")
 
-        pop_rdx = input(f"pop rdx gadget地址 [{DEFAULT_REPLACEMENTS['pop_rdx_gadget']}]: ").strip()
-        if pop_rdx and pop_rdx != 'skip':
-            is_valid, error_msg = validate_parameter('pop_rdx_gadget', pop_rdx)
-            if is_valid:
-                params['pop_rdx_gadget'] = pop_rdx
-            else:
-                print(f"⚠️  {error_msg}，使用默认值")
+    #     pop_rdx = input(f"pop rdx gadget地址 [{DEFAULT_REPLACEMENTS['pop_rdx_gadget']}]: ").strip()
+    #     if pop_rdx and pop_rdx != 'skip':
+    #         is_valid, error_msg = validate_parameter('pop_rdx_gadget', pop_rdx)
+    #         if is_valid:
+    #             params['pop_rdx_gadget'] = pop_rdx
+    #         else:
+    #             print(f"⚠️  {error_msg}，使用默认值")
 
-    elif template_id == 3:  # 格式化字符串 - 额外参数
-        target_val = input(f"目标写入值 [{DEFAULT_REPLACEMENTS['target_value']}]: ").strip()
-        if target_val and target_val != 'skip':
-            is_valid, error_msg = validate_parameter('target_value', target_val)
-            if is_valid:
-                params['target_value'] = target_val
-            else:
-                print(f"⚠️  {error_msg}，使用默认值")
+    # elif template_id == 3:  # 格式化字符串 - 额外参数
+    #     target_val = input(f"目标写入值 [{DEFAULT_REPLACEMENTS['target_value']}]: ").strip()
+    #     if target_val and target_val != 'skip':
+    #         is_valid, error_msg = validate_parameter('target_value', target_val)
+    #         if is_valid:
+    #             params['target_value'] = target_val
+    #         else:
+    #             print(f"⚠️  {error_msg}，使用默认值")
 
     print()
     return params

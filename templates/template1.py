@@ -1,46 +1,28 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Basic PWN Template - Stack Buffer Overflow
-Author: CTF Player
+Basic PWN Template - Normal Template 
+Author: p0ach1l
 Date: {{date}}
-Target: {{target}}
+Target: {{binary_name}}
 """
 
 from pwn import *
+from ctypes import *
+from LibcSearcher import *
+from pwnscript import *
 
-# 设置目标程序
-binary = "./{{binary_name}}"
-elf = ELF(binary)
 
-# 设置上下文
-context.binary = elf
-context.log_level = 'debug'
-context.arch = 'amd64'  # 或 'i386'
+filename = "./{{binary_name}}"
+url = '{{remote_host}}:{{remote_port}}'
+gdbscript = '''
+  b * main
+'''
+set_context(log_level='debug', arch='amd64', os='linux', endian='little', timeout=5)
+p = pr(url=url , filename=filename , gdbscript=gdbscript , framepath='')
+elf = ELF(filename)
 
-def exploit():
-    # 连接方式选择
-    if args.REMOTE:
-        p = remote("{{remote_host}}", {{remote_port}})
-    else:
-        p = process(binary)
 
-    # 调试设置
-    if args.GDB:
-        gdb.attach(p, '''
-        break main
-        continue
-        ''')
 
-    # Exploit 代码
-    payload = b"A" * {{offset}}  # 填充到返回地址
-    payload += p64({{return_address}})  # 覆盖返回地址
 
-    # 发送payload
-    p.sendline(payload)
-
-    # 获取shell
-    p.interactive()
-
-if __name__ == "__main__":
-    exploit()
+p.interactive()
