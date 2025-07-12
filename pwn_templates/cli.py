@@ -42,7 +42,7 @@ def create_parser():
                            help='交互式配置模板参数')
 
     # 目标程序相关参数
-    new_parser.add_argument('--binary',
+    new_parser.add_argument('-b', '--binary',
                            help='目标程序名称')
 
     new_parser.add_argument('--url',
@@ -63,22 +63,26 @@ def show_templates():
 
 def main():
     """主命令行入口"""
-    parser = create_parser()
+    try:
+        parser = create_parser()
 
-    # 如果没有参数，显示帮助信息
-    if len(sys.argv) == 1:
-        parser.print_help()
-        print("\n")
-        show_templates()
-        return
+        # 如果没有参数，显示帮助信息
+        if len(sys.argv) == 1:
+            parser.print_help()
+            print("\n")
+            show_templates()
+            return
 
-    args = parser.parse_args()
+        args = parser.parse_args()
 
-    # 处理命令
-    if args.command == 'new':
-        handle_new_command(args)
-    else:
-        parser.print_help()
+        # 处理命令
+        if args.command == 'new':
+            handle_new_command(args)
+        else:
+            parser.print_help()
+    except KeyboardInterrupt:
+        print("\n\n👋 用户取消操作，程序退出")
+        sys.exit(0)
 
 def handle_new_command(args):
     """处理 new 命令"""
@@ -100,14 +104,20 @@ def handle_new_command(args):
     if args.url:
         params['url'] = args.url
     
-    # 设置输出文件名    output_file = args.binary
+    # 设置输出文件名    
+    output_file = args.binary
+    
     # 交互式配置
     if args.interactive:
         params.update(interactive_config(args.template_id))
         if not output_file:
-            default_name = params['binary_name']
-            user_input = input(f"输出文件名 (回车使用默认: {default_name}): ").strip()
-            output_file = user_input or default_name
+            try:
+                default_name = params['binary_name']
+                user_input = input(f"输出文件名 (回车使用默认: {default_name}): ").strip()
+                output_file = user_input or default_name
+            except KeyboardInterrupt:
+                print("\n\n👋 用户取消操作，程序退出")
+                sys.exit(0)
 
 
     result = generator.generate_template(args.template_id, output_file)
@@ -136,22 +146,28 @@ def interactive_config(template_id):
 
     print(f"\n🔧 交互式配置模板 {template_id} - {template_info['name']}")
     print(f"📄 {template_info['description']}")
-    print("提示: 直接回车使用默认值，输入 'skip' 跳过可选参数\n")
+    print("提示: 直接回车使用默认值，输入 'skip' 跳过可选参数")
+    print("按 Ctrl+C 可随时退出\n")
 
     params = {}
 
-    # 基础参数
-    binary = input(f"目标程序名称 [{DEFAULT_REPLACEMENTS['binary_name']}]: ").strip()
-    if binary.lower() != 'skip':
-        params['binary_name'] = binary or DEFAULT_REPLACEMENTS['binary_name']
+    try:
+        # 基础参数
+        binary = input(f"目标程序名称 [{DEFAULT_REPLACEMENTS['binary_name']}]: ").strip()
+        if binary.lower() != 'skip':
+            params['binary_name'] = binary or DEFAULT_REPLACEMENTS['binary_name']
 
-    target_desc = input(f"目标描述 [{DEFAULT_REPLACEMENTS['description']}]: ").strip()
-    if target_desc.lower() != 'skip':
-        params['description'] = target_desc or DEFAULT_REPLACEMENTS['description']
+        target_desc = input(f"目标描述 [{DEFAULT_REPLACEMENTS['description']}]: ").strip()
+        if target_desc.lower() != 'skip':
+            params['description'] = target_desc or DEFAULT_REPLACEMENTS['description']
 
-    url = input(f"目标URL [{DEFAULT_REPLACEMENTS['url']}]: ").strip()
-    if url.lower() != 'skip':
-        params['url'] = url or DEFAULT_REPLACEMENTS['url']
+        url = input(f"目标URL [{DEFAULT_REPLACEMENTS['url']}]: ").strip()
+        if url.lower() != 'skip':
+            params['url'] = url or DEFAULT_REPLACEMENTS['url']
+
+    except KeyboardInterrupt:
+        print("\n\n👋 用户取消操作，程序退出")
+        sys.exit(0)
 
     return params
 
