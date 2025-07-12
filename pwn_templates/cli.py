@@ -18,12 +18,12 @@ def create_parser():
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 示例:
-  pwn new 1                                    # 生成基础栈溢出模板
+  pwn new 1                                   # 生成基础栈溢出模板
   pwn new 2 -o my_exploit.py                  # 指定输出文件名
   pwn new 3 --binary target --offset 64       # 指定二进制文件名和偏移
   pwn new 4 --host 192.168.1.100 --port 1337  # 指定远程主机和端口
   pwn new 5 -i                                # 交互式配置参数
-  pwn new 1 --target "Ubuntu 20.04 x64"       # 指定目标描述
+  pwn new 1 --description "Ubuntu 20.04 x64"       # 指定目标描述
         """
     )
 
@@ -42,18 +42,14 @@ def create_parser():
                            help='交互式配置模板参数')
 
     # 目标程序相关参数
-    new_parser.add_argument('--binary',
+    new_parser.add_argument('--elf' , '--binary',
                            help='目标程序名称')
 
     # 远程连接参数
     new_parser.add_argument('--host',
                            help='远程主机地址 (默认: 127.0.0.1)')
-    new_parser.add_argument('--port', type=int,
+    new_parser.add_argument('-p' , '--port', type=int,
                            help='远程端口 (默认: 9999)')
-
-    # 漏洞利用参数
-    new_parser.add_argument('--offset', type=int,
-                           help='溢出偏移量 (默认: 72)')
 
     # 目标描述
     new_parser.add_argument('--description',
@@ -119,7 +115,7 @@ def handle_new_command(args):
     if args.interactive:
         params.update(interactive_config(args.template_id))
         if not output_file:
-            output_file = args.binary
+            output_file = params['binary_name']
             output_file = input("输出文件名 (回车使用默认): ").strip()
 
     # 验证参数

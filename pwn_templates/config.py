@@ -138,9 +138,9 @@ def validate_parameter(key, value):
 
     return True, None
 
-def get_template_specific_params(template_id):
-    """获取模板特定的参数列表"""
-    return TEMPLATE_SPECIFIC_PARAMS.get(template_id, [])
+# def get_template_specific_params(template_id):
+#     """获取模板特定的参数列表"""
+#     return TEMPLATE_SPECIFIC_PARAMS.get(template_id, [])
 
 def validate_all_parameters(params):
     """
