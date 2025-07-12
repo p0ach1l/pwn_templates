@@ -22,12 +22,13 @@ class TemplateGenerator:
         """批量设置替换变量"""
         self.replacements.update(replacements_dict)
     
-    def generate_template(self, template_num):
+    def generate_template(self, template_num, output_file=None):
         """
         生成模板文件
 
         Args:
             template_num (int): 模板编号
+            output_file (str, optional): 输出文件名，如果为None则使用默认名称
 
         Returns:
             str: 生成的文件路径，如果失败返回None
@@ -50,16 +51,18 @@ class TemplateGenerator:
             return None
 
         # 确定输出文件名
-        output_file = f"exploit_{template_num}.py"
+        if not output_file:
+            output_file = f"exploit_{template_num}.py"
+        elif not output_file.endswith('.py'):
+            output_file += '.py'
 
-        # 写入生成的文件（不做变量替换，保持原样）
+        # 进行变量替换
+        processed_content = self._replace_variables(template_content)
+
+        # 写入生成的文件
         try:
             with open(output_file, 'w', encoding='utf-8') as f:
-                f.write(template_content)
-
-            print(f"✅ 成功生成模板文件: {output_file}")
-            print(f"📝 模板类型: {template_info['name']}")
-            print(f"📄 描述: {template_info['description']}")
+                f.write(processed_content)
 
             return output_file
 
@@ -67,4 +70,22 @@ class TemplateGenerator:
             print(f"错误: 无法写入文件 {output_file}: {e}")
             return None
     
-
+    def _replace_variables(self, content):
+        """
+        替换模板中的变量占位符
+        
+        Args:
+            content (str): 模板内容
+            
+        Returns:
+            str: 替换后的内容
+        """
+        # 更新日期
+        self.replacements['date'] = datetime.now().strftime("%Y-%m-%d")
+        
+        # 进行变量替换
+        for key, value in self.replacements.items():
+            placeholder = f"{{{{{key}}}}}"  # 格式: {{variable_name}}
+            content = content.replace(placeholder, str(value))
+        
+        return content

