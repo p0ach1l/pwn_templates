@@ -149,28 +149,10 @@ def interactive_config(template_id):
     if target_desc.lower() != 'skip':
         params['description'] = target_desc or DEFAULT_REPLACEMENTS['description']
 
-<<<<<<< HEAD
     url = input(f"目标URL [{DEFAULT_REPLACEMENTS['url']}]: ").strip()
     if url.lower() != 'skip':
         params['url'] = url or DEFAULT_REPLACEMENTS['url']
 
-=======
-    # 远程连接参数
-    host = input(f"远程主机地址 [{DEFAULT_REPLACEMENTS['remote_host']}]: ").strip()
-    if host.lower() != 'skip':
-        params['remote_host'] = host or DEFAULT_REPLACEMENTS['remote_host']
-
-    port = input(f"远程端口 [{DEFAULT_REPLACEMENTS['remote_port']}]: ").strip()
-    if port.lower() != 'skip':
-        port = port or DEFAULT_REPLACEMENTS['remote_port']
-        is_valid, error_msg = validate_parameter('remote_port', port)
-        if is_valid:
-            params['remote_port'] = port
-        else:
-            print(f"⚠️  {error_msg}，使用默认值")
-            params['remote_port'] = DEFAULT_REPLACEMENTS['remote_port']
-
->>>>>>> 035f4a2f0d06dcff1a01c63e8ae1f31da8800a2c
     return params
 
 
