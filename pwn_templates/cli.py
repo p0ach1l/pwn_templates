@@ -103,22 +103,25 @@ def handle_new_command(args):
         params['binary_name'] = args.binary
     if args.url:
         params['url'] = args.url
-    
-    # 设置输出文件名    
-    output_file = args.binary
-    
+
+    # 设置输出文件名
+    output_file = args.output or args.binary
+
     # 交互式配置
     if args.interactive:
         params.update(interactive_config(args.template_id))
         if not output_file:
             try:
-                default_name = params['binary_name']
+                default_name = params.get('binary_name', 'target')
                 user_input = input(f"输出文件名 (回车使用默认: {default_name}): ").strip()
                 output_file = user_input or default_name
             except KeyboardInterrupt:
                 print("\n\n👋 用户取消操作，程序退出")
                 sys.exit(0)
 
+    # 将参数设置到生成器中
+    if params:
+        generator.set_replacements(params)
 
     result = generator.generate_template(args.template_id, output_file)
 

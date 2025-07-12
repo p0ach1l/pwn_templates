@@ -4,7 +4,7 @@
 Basic PWN Template - Normal Template 
 Author: p0ach1l
 Date: {{date}}
-Target: {{description}}
+description: {{description}}
 """
 
 from pwn import *

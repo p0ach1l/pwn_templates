@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Basic PWN Template - Normal Template 
+Basic PWN Template - basis Template 
 Author: p0ach1l
 Date: {{date}}
-Target: {{description}}
+description: {{description}}
 """
 
 from pwn import *

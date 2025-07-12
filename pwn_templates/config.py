@@ -20,21 +20,21 @@ TEMPLATE_MAPPING = {
         "name": "Format String",
         "description": "格式化字符串漏洞模板，适用于printf类漏洞"
     },
-    # 3: {
-    #     "file": "template3.py",
-    #     "name": "Format String",
-    #     "description": "格式化字符串漏洞模板，适用于printf类漏洞"
-    # },
-    # 4: {
-    #     "file": "template4.py",
-    #     "name": "Heap Exploitation", 
-    #     "description": "堆利用模板，适用于UAF、Double Free等堆漏洞"
-    # },
-    # 5: {
-    #     "file": "template5.py",
-    #     "name": "Shellcode Injection",
-    #     "description": "Shellcode注入模板，适用于可执行栈的情况"
-    # }
+    3: {
+        "file": "template3.py",
+        "name": "Format String",
+        "description": "格式化字符串漏洞模板，适用于printf类漏洞"
+    },
+    4: {
+        "file": "template4.py",
+        "name": "Heap Exploitation", 
+        "description": "堆利用模板，适用于UAF、Double Free等堆漏洞"
+    },
+    5: {
+        "file": "template5.py",
+        "name": "Shellcode Injection",
+        "description": "Shellcode注入模板，适用于可执行栈的情况"
+    }
 }
 
 # 默认替换变量

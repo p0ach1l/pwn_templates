@@ -12,20 +12,7 @@
 
 ## 📦 安装
 
-### 方法1: 直接使用 
-```bash
-# 克隆项目
-git clone https://github.com/p0ach1l/pwn_templates.git
-cd pwn_templates
-
-# 给pwn脚本添加执行权限
-chmod +x pwn
-
-# 直接使用
-./pwn new 1
-```
-
-### 方法2: 安装到系统（推荐）
+### 安装到系统（推荐）
 ```bash
 # 安装依赖
 pip install pwntools
@@ -43,16 +30,19 @@ pwnt new 1
 
 ```bash
 # 生成模板1 (栈溢出)
-./pwn new 1
+pwnt new 1
+
+# 指定二进制文件
+pwnt new 1 -b tartge
 
 # 生成模板2并指定输出文件名
-./pwn new 2 -o my_exploit.py
+pwnt new 2 -o my_exploit.py
 
 # 交互式配置后生成模板
-./pwn new 3 --interactive
+pwnt new 3 --interactive
 
 # 自定义参数生成模板
-./pwn new 1 --binary target --url 192.168.1.100:9999
+pwnt new 1 --binary target --url 192.168.1.100:9999
 ```
 
 ### 自定义模板
