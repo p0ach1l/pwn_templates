@@ -8,7 +8,7 @@ PWN Templates Command Line Interface
 import sys
 import argparse
 from .generator import TemplateGenerator
-from .config import list_all_templates, validate_all_parameters, get_template_specific_params
+from .config import list_all_templates, validate_all_parameters
 
 def create_parser():
     """创建命令行参数解析器"""

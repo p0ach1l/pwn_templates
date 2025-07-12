@@ -8,7 +8,7 @@ PWN Template Generator
 import os
 import shutil
 from datetime import datetime
-from .config import get_template_path, get_template_info, DEFAULT_REPLACEMENTS, list_all_templates
+from .config import get_template_path, get_template_info, DEFAULT_REPLACEMENTS
 
 class TemplateGenerator:
     def __init__(self):
