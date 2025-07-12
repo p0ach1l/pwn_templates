@@ -42,13 +42,13 @@ def create_parser():
                            help='交互式配置模板参数')
 
     # 目标程序相关参数
-    new_parser.add_argument('--elf' , '--binary',
+    new_parser.add_argument('--binary',
                            help='目标程序名称')
 
     # 远程连接参数
     new_parser.add_argument('--host',
                            help='远程主机地址 (默认: 127.0.0.1)')
-    new_parser.add_argument('-p' , '--port', type=int,
+    new_parser.add_argument('--port', type=int,
                            help='远程端口 (默认: 9999)')
 
     # 目标描述
