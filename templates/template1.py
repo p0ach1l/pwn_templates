@@ -14,7 +14,7 @@ from pwnscript import *
 
 
 filename = "./{{binary_name}}"
-url = '{{remote_host}}:{{remote_port}}'
+url = '{{url}}'
 gdbscript = '''
   b * main
 '''

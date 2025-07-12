@@ -9,7 +9,7 @@ PWN Templates Command Line Interface
 import sys
 import argparse
 from .generator import TemplateGenerator
-from .config import list_all_templates, validate_all_parameters
+from .config import list_all_templates
 
 def create_parser():
     """创建命令行参数解析器"""
@@ -21,10 +21,9 @@ def create_parser():
 示例:
   pwn new 1                                   # 生成基础栈溢出模板
   pwn new 2 -o my_exploit.py                  # 指定输出文件名
-  pwn new 3 --binary target --offset 64       # 指定二进制文件名和偏移
-  pwn new 4 --host 192.168.1.100 --port 1337  # 指定远程主机和端口
+  pwn new 4 --url 192.168.1.100:1337          # 指定远程主机和端口
   pwn new 5 -i                                # 交互式配置参数
-  pwn new 1 --description "Ubuntu 20.04 x64"       # 指定目标描述
+  pwn new 1 --description "Ubuntu 20.04 x64"  # 指定目标描述
         """
     )
 
@@ -46,11 +45,8 @@ def create_parser():
     new_parser.add_argument('--binary',
                            help='目标程序名称')
 
-    # 远程连接参数
-    new_parser.add_argument('--host',
-                           help='远程主机地址 (默认: 127.0.0.1)')
-    new_parser.add_argument('--port', type=int,
-                           help='远程端口 (默认: 9999)')
+    new_parser.add_argument('--url',
+                           help='目标URL')
 
     # 目标描述
     new_parser.add_argument('--description',
@@ -101,17 +97,10 @@ def handle_new_command(args):
     params = {}
     if args.binary:
         params['binary_name'] = args.binary
-    if args.host:
-        params['remote_host'] = args.host
-    if args.port:
-        params['remote_port'] = str(args.port)
-    # if args.offset:
-    #     params['offset'] = str(args.offset)
-    # if args.description:
-    #     params['description'] = args.description
-
-    # 设置输出文件名
-    output_file = args.binary
+    if args.url:
+        params['url'] = args.url
+    
+    # 设置输出文件名    output_file = args.binary
     # 交互式配置
     if args.interactive:
         params.update(interactive_config(args.template_id))
@@ -120,17 +109,7 @@ def handle_new_command(args):
             user_input = input(f"输出文件名 (回车使用默认: {default_name}): ").strip()
             output_file = user_input or default_name
 
-    # 验证参数
-    if params:
-        is_valid, errors = validate_all_parameters(params)
-        if not is_valid:
-            print("❌ 参数验证失败:")
-            for error in errors:
-                print(f"   {error}")
-            return
-        generator.set_replacements(params)
 
-    # 生成模板
     result = generator.generate_template(args.template_id, output_file)
 
     if result:
@@ -150,7 +129,7 @@ def handle_new_command(args):
 
 def interactive_config(template_id):
     """交互式参数配置"""
-    from .config import DEFAULT_REPLACEMENTS, validate_parameter
+    from .config import DEFAULT_REPLACEMENTS
 
     templates = list_all_templates()
     template_info = templates[template_id]
@@ -170,6 +149,12 @@ def interactive_config(template_id):
     if target_desc.lower() != 'skip':
         params['description'] = target_desc or DEFAULT_REPLACEMENTS['description']
 
+<<<<<<< HEAD
+    url = input(f"目标URL [{DEFAULT_REPLACEMENTS['url']}]: ").strip()
+    if url.lower() != 'skip':
+        params['url'] = url or DEFAULT_REPLACEMENTS['url']
+
+=======
     # 远程连接参数
     host = input(f"远程主机地址 [{DEFAULT_REPLACEMENTS['remote_host']}]: ").strip()
     if host.lower() != 'skip':
@@ -185,6 +170,7 @@ def interactive_config(template_id):
             print(f"⚠️  {error_msg}，使用默认值")
             params['remote_port'] = DEFAULT_REPLACEMENTS['remote_port']
 
+>>>>>>> 035f4a2f0d06dcff1a01c63e8ae1f31da8800a2c
     return params
 
 
