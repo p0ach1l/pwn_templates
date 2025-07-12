@@ -22,7 +22,6 @@ cd pwn_templates
 chmod +x pwn
 
 # 直接使用
-./pwn list
 ./pwn new 1
 ```
 
@@ -35,7 +34,6 @@ pip install pwntools
 pip install -e .
 
 # 使用系统命令
-pwnt list
 pwnt new 1
 ```
 
