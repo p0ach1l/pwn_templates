@@ -61,14 +61,18 @@ class TemplateGenerator:
 
         # 写入生成的文件
         try:
+            if os.path.exists(output_file):
+                print(f"错误: 文件 '{output_file}' 已存在，禁止覆盖。")
+                return None
+
             with open(output_file, 'w', encoding='utf-8') as f:
                 f.write(processed_content)
-
-            return output_file
 
         except Exception as e:
             print(f"错误: 无法写入文件 {output_file}: {e}")
             return None
+
+        return output_file
     
     def _replace_variables(self, content):
         """

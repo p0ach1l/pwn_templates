@@ -115,8 +115,9 @@ def handle_new_command(args):
     if args.interactive:
         params.update(interactive_config(args.template_id))
         if not output_file:
-            output_file = params['binary_name']
-            output_file = input("输出文件名 (回车使用默认): ").strip()
+            default_name = params['binary_name']
+            user_input = input(f"输出文件名 (回车使用默认: {default_name}): ").strip()
+            output_file = user_input or default_name
 
     # 验证参数
     if params:
