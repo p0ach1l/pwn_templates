@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
+
 """
 PWN Templates Command Line Interface
 完整的命令行接口，支持所有参数选项
@@ -146,6 +147,7 @@ def handle_new_command(args):
         print("❌ 模板生成失败")
         sys.exit(1)
 
+
 def interactive_config(template_id):
     """交互式参数配置"""
     from .config import DEFAULT_REPLACEMENTS, validate_parameter
@@ -161,70 +163,30 @@ def interactive_config(template_id):
 
     # 基础参数
     binary = input(f"目标程序名称 [{DEFAULT_REPLACEMENTS['binary_name']}]: ").strip()
-    if binary and binary != 'skip':
-        params['binary_name'] = binary
+    if binary.lower() != 'skip':
+        params['binary_name'] = binary or DEFAULT_REPLACEMENTS['binary_name']
 
     target_desc = input(f"目标描述 [{DEFAULT_REPLACEMENTS['description']}]: ").strip()
-    if target_desc and target_desc != 'skip':
-        params['description'] = target_desc
+    if target_desc.lower() != 'skip':
+        params['description'] = target_desc or DEFAULT_REPLACEMENTS['description']
 
     # 远程连接参数
     host = input(f"远程主机地址 [{DEFAULT_REPLACEMENTS['remote_host']}]: ").strip()
-    if host and host != 'skip':
-        params['remote_host'] = host
+    if host.lower() != 'skip':
+        params['remote_host'] = host or DEFAULT_REPLACEMENTS['remote_host']
 
     port = input(f"远程端口 [{DEFAULT_REPLACEMENTS['remote_port']}]: ").strip()
-    if port and port != 'skip':
+    if port.lower() != 'skip':
+        port = port or DEFAULT_REPLACEMENTS['remote_port']
         is_valid, error_msg = validate_parameter('remote_port', port)
         if is_valid:
             params['remote_port'] = port
         else:
             print(f"⚠️  {error_msg}，使用默认值")
+            params['remote_port'] = DEFAULT_REPLACEMENTS['remote_port']
 
-    # # 根据模板类型询问特定参数
-    # specific_params = get_template_specific_params(template_id)
-
-    # for param in specific_params:
-    #     default_value = DEFAULT_REPLACEMENTS.get(param, "")
-    #     param_name = param.replace('_', ' ').title()
-
-    #     value = input(f"{param_name} [{default_value}]: ").strip()
-    #     if value and value != 'skip':
-    #         is_valid, error_msg = validate_parameter(param, value)
-    #         if is_valid:
-    #             params[param] = value
-    #         else:
-    #             print(f"⚠️  {error_msg}，使用默认值")
-
-    # # 模板特定的额外参数
-    # if template_id == 2:  # ROP链 - 额外的gadget地址
-    #     pop_rsi = input(f"pop rsi gadget地址 [{DEFAULT_REPLACEMENTS['pop_rsi_gadget']}]: ").strip()
-    #     if pop_rsi and pop_rsi != 'skip':
-    #         is_valid, error_msg = validate_parameter('pop_rsi_gadget', pop_rsi)
-    #         if is_valid:
-    #             params['pop_rsi_gadget'] = pop_rsi
-    #         else:
-    #             print(f"⚠️  {error_msg}，使用默认值")
-
-    #     pop_rdx = input(f"pop rdx gadget地址 [{DEFAULT_REPLACEMENTS['pop_rdx_gadget']}]: ").strip()
-    #     if pop_rdx and pop_rdx != 'skip':
-    #         is_valid, error_msg = validate_parameter('pop_rdx_gadget', pop_rdx)
-    #         if is_valid:
-    #             params['pop_rdx_gadget'] = pop_rdx
-    #         else:
-    #             print(f"⚠️  {error_msg}，使用默认值")
-
-    # elif template_id == 3:  # 格式化字符串 - 额外参数
-    #     target_val = input(f"目标写入值 [{DEFAULT_REPLACEMENTS['target_value']}]: ").strip()
-    #     if target_val and target_val != 'skip':
-    #         is_valid, error_msg = validate_parameter('target_value', target_val)
-    #         if is_valid:
-    #             params['target_value'] = target_val
-    #         else:
-    #             print(f"⚠️  {error_msg}，使用默认值")
-
-    print()
     return params
+
 
 if __name__ == "__main__":
     main()
