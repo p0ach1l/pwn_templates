@@ -115,11 +115,11 @@ def handle_new_command(args):
 
     # 设置输出文件名
     output_file = args.binary
-
     # 交互式配置
     if args.interactive:
         params.update(interactive_config(args.template_id))
         if not output_file:
+            output_file = args.binary
             output_file = input("输出文件名 (回车使用默认): ").strip()
 
     # 验证参数
@@ -184,20 +184,20 @@ def interactive_config(template_id):
         else:
             print(f"⚠️  {error_msg}，使用默认值")
 
-    # 根据模板类型询问特定参数
-    specific_params = get_template_specific_params(template_id)
+    # # 根据模板类型询问特定参数
+    # specific_params = get_template_specific_params(template_id)
 
-    for param in specific_params:
-        default_value = DEFAULT_REPLACEMENTS.get(param, "")
-        param_name = param.replace('_', ' ').title()
+    # for param in specific_params:
+    #     default_value = DEFAULT_REPLACEMENTS.get(param, "")
+    #     param_name = param.replace('_', ' ').title()
 
-        value = input(f"{param_name} [{default_value}]: ").strip()
-        if value and value != 'skip':
-            is_valid, error_msg = validate_parameter(param, value)
-            if is_valid:
-                params[param] = value
-            else:
-                print(f"⚠️  {error_msg}，使用默认值")
+    #     value = input(f"{param_name} [{default_value}]: ").strip()
+    #     if value and value != 'skip':
+    #         is_valid, error_msg = validate_parameter(param, value)
+    #         if is_valid:
+    #             params[param] = value
+    #         else:
+    #             print(f"⚠️  {error_msg}，使用默认值")
 
     # # 模板特定的额外参数
     # if template_id == 2:  # ROP链 - 额外的gadget地址
