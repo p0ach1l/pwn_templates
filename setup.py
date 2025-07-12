@@ -9,7 +9,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 setup(
     name="pwn-templates",
     version="1.0.0",
-    author="CTF Player",
+    author="p0ach1l",
     author_email="player@ctf.com",
     description="A tool for generating PWN exploit templates for CTF competitions",
     long_description=long_description,
