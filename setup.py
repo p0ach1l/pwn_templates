@@ -33,7 +33,7 @@ setup(
     ],
     entry_points={
         "console_scripts": [
-            "pwn-templates=pwn_templates.cli:main",
+            "pwnt=pwn_templates.cli:main",
         ],
     },
     include_package_data=True,
