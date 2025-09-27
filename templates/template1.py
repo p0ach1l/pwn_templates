@@ -18,11 +18,12 @@ url = '{{url}}'
 gdbscript = '''
   b * main
 '''
-set_context(log_level='debug', arch='amd64', os='linux', endian='little', timeout=5)
-p = pr(url=url , filename=filename , gdbscript=gdbscript , framepath='')
+set_context(log_level='debug', arch='amd64')
+p = pr(url=url , filename=filename , gdbscript=gdbscript)
 elf = ELF(filename)
+set_binary(elf)
 
 
 
 
-p.interactive()
+ia()
